@@ -1,4 +1,23 @@
 package dao.impl;
 
-public class UserDaoImpl {
+import dao.UserDao;
+import db.DataBase;
+import models.Product;
+import models.User;
+
+import java.util.Arrays;
+
+public class UserDaoImpl implements UserDao {
+    @Override
+    public void save(User user) {
+        DataBase.users = Arrays.copyOf(DataBase.users , DataBase.users.length + 1);
+        DataBase.users[DataBase.users.length - 1] = user;
+    }
+
+    @Override
+    public User[] findAll() {
+        return DataBase.users;
+    }
+
+
 }

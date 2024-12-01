@@ -1,10 +1,10 @@
 package exception;
 
-public class Exception extends RuntimeException{
-    public Exception() {
+public class InvalidData extends RuntimeException{
+    public InvalidData() {
     }
 
-    public Exception(String message) {
+    public InvalidData(String message) {
         super(message);
     }
 }
