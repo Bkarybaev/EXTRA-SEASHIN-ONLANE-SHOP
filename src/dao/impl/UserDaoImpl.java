@@ -12,6 +12,8 @@ public class UserDaoImpl implements UserDao {
     public void save(User user) {
         DataBase.users = Arrays.copyOf(DataBase.users , DataBase.users.length + 1);
         DataBase.users[DataBase.users.length - 1] = user;
+        System.out.println(user);
+        System.out.println("successful user!!");
     }
 
     @Override

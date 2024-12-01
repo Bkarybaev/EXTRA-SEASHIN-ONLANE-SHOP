@@ -111,6 +111,6 @@ public class Product {
                 ", color='" + color + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", quantity=" + quantity +
-                '}';
+                '}'+"\n";
     }
 }

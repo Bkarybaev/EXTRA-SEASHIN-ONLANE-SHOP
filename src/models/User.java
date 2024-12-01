@@ -79,6 +79,11 @@ public class User {
         this.basket = basket;
     }
 
+    public void addBasket(Product product) {
+        this.basket = Arrays.copyOf(basket, basket.length + 1);
+        this.basket[basket.length - 1] = product;
+    }
+
     @Override
     public String toString() {
         return "User{" +

@@ -2,14 +2,12 @@ import config.Validation;
 import dao.UserDao;
 import dao.impl.ProductDaoImpl;
 import dao.impl.UserDaoImpl;
-import db.DataBase;
 import enums.Category;
 import enums.Role;
 import enums.Size;
 import exception.InvalidData;
 import models.Product;
 import models.User;
-import service.ProductService;
 import service.impl.ProductServiceImpl;
 import service.impl.UserServiceImpl;
 
@@ -18,6 +16,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
+    static User loginData;
     static Size[] sizes = new Size[0];
     static User Admin = new User("admin@gmail.com", "Admin123!", "Admin", Role.ADMIN);
     static ProductDaoImpl productDao = new ProductDaoImpl();
@@ -50,9 +49,11 @@ public class Main {
                     registration();
                 }
                 case 2 -> {
-                    User loginData = login();
+                     loginData = login();
                     if (loginData.getEmail().equals(Admin.getEmail()) && loginData.getPassword().equals(Admin.getPassword())) {
-                        productService.addProduct(addProduct());
+                        aminMethod();
+                    } else {
+
                     }
                 }
             }
@@ -150,7 +151,7 @@ public class Main {
         for (String string : s) {
             switch (string) {
                 case "XXS" -> product.setSizes(size(Size.XXS));
-                case "XS" ->product.setSizes(size(Size.XS)) ;
+                case "XS" -> product.setSizes(size(Size.XS));
                 case "XL" -> product.setSizes(size(Size.XL));
                 case "S" -> product.setSizes(size(Size.S));
                 case "M" -> product.setSizes(size(Size.M));
@@ -174,5 +175,189 @@ public class Main {
         sizes = Arrays.copyOf(sizes, sizes.length + 1);
         sizes[sizes.length - 1] = size;
         return sizes;
+    }
+
+    public static void aminMethod() {
+        while (true) {
+            System.out.print("""
+                    1. Продукта кошуу.
+                    2. Продукта очуруу.
+                    3. Продукта озгортуу.
+                    4. Бардык продукталарды коруу.
+                    0. logout
+                    """);
+            System.out.print("write choice: ");
+            int c = 0;
+            boolean isblok1;
+            do {
+                try {
+                    c = new Scanner(System.in).nextInt();
+                    isblok1 = false;
+
+                } catch (InputMismatchException e) {
+                    isblok1 = true;
+                    System.out.print("Invalid number try egan :");
+                }
+            } while (isblok1);
+            switch (c) {
+                case 1 -> productService.addProduct(addProduct());
+                case 2 -> deletedProduct();
+                case 3 -> updateByIdProduct();
+                case 4 -> productService.getAllProduct();
+                case 0 -> {
+                    return;
+                }
+                default -> System.out.println("error choice!");
+            }
+        }
+    }
+
+    public static void deletedProduct() {
+        while (true) {
+            System.out.print("""
+                    1.Deleted by id
+                    2.Deleted all
+                    0.logout
+                    """);
+            System.out.print("choice: ");
+            int choice = 0;
+            boolean isblock;
+            do {
+                try {
+                    choice = new Scanner(System.in).nextInt();
+                    isblock = false;
+                } catch (InputMismatchException e) {
+                    isblock = true;
+                    System.out.print("choice try egan: ");
+                }
+            } while (isblock);
+            switch (choice) {
+                case 1 -> {
+                    System.out.print("Deleted by id write number: ");
+                    productService.deleteProductById(new Scanner(System.in).nextLong());
+                }
+                case 2 -> {
+                    productService.deletedAllProduct();
+                }
+                case 0 -> {
+                    return;
+                }
+            }
+        }
+    }
+
+    public static void updateByIdProduct() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("write By Id update: ");
+        long id = scanner.nextLong();
+        Product product = addProduct();
+        productService.updateById(id, product);
+    }
+
+    public static void clientMethod() {
+        while (true) {
+            System.out.print("""
+                    1. Бардык продукталарды коруу.
+                    2. Продукталарды категориясы менен размерлерине карап коруу.
+                    3. Ар бир клиент каалган продуктаны id-си аркылуу, (favoriteProducts)
+                    избранныйга кошуп кайра ал жактан очуро алуу.
+                    4. Бир клиенттин бардык избранныйдагы продукталарын коруу.
+                    5. Id-си аркылуу бир продуктаны коруу.
+                    0. logout
+                    """);
+            System.out.print("write choice: ");
+            int choice = 0;
+            boolean isblok;
+            do {
+                try {
+                    choice = new Scanner(System.in).nextInt();
+                    isblok = false;
+                } catch (InputMismatchException e) {
+                    isblok = true;
+                    System.out.println("Invalid choice try egan :");
+                }
+            } while (isblok);
+
+            switch (choice) {
+                case 1 -> productService.getAllProduct();
+                case 2 -> category();
+                case 3 ->                       //todo favoriteProducts 3
+                case 0 -> {
+                    return;
+                }
+            }
+        }
+    }
+
+    public static void category() {
+        while (true) {
+            System.out.print("""
+                    1.MAN
+                    2.WOMAN
+                    3.CHILDREN
+                    0.logout
+                    """);
+            System.out.print("choice : ");
+            int choice = 0;
+            boolean isblok;
+            do {
+                try {
+                    choice = new Scanner(System.in).nextInt();
+                    isblok = false;
+                } catch (InputMismatchException e) {
+                    isblok = true;
+                    System.out.println("error choice try egan :");
+                }
+
+            } while (isblok);
+
+            switch (choice) {
+                case 1 -> {
+                    for (Product product : productDao.getAllProduct()) {
+                        if (product.getCategory().equals(Category.MAN)) {
+                            System.out.println(product);
+                        }
+                    }
+                }
+                case 2 -> {
+                    for (Product product : productDao.getAllProduct()) {
+                        if (product.getCategory().equals(Category.WOMAN)) {
+                            System.out.println(product);
+                        }
+                    }
+                }
+                case 3 -> {
+                    for (Product product : productDao.getAllProduct()) {
+                        if (product.getCategory().equals(Category.CHILDREN)) {
+                            System.out.println(product);
+                        }
+                    }
+                }
+                case 0->{
+                    return;
+                }
+                default -> System.out.println("error choice!!");
+            }
+        }
+    }
+
+    public static void favoriteProducts(){
+        System.out.print("""
+                1. add product basket
+                2. delete id
+                """);
+
+        System.out.print("add basket by id: ");
+        int id = new Scanner(System.in).nextInt();
+        boolean isblok = false;
+        for (Product product : productDao.getAllProduct()) {
+            if (id == product.getId()){
+                isblok = true;
+                loginData.addBasket(product);
+                System.out.println("successful product [basket]");
+                System.out.println(loginData);
+            }
+        }
+        if (!isblok) System.out.println("not fount " + id +" id !!");
     }
 }
