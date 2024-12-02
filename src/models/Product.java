@@ -25,7 +25,7 @@ public class Product {
     }
 
     public Product(Category category, String name, BigDecimal price, String color, String imageUrl, int quantity) {
-        this.id = generateId++;
+        this.id = generateId;
         this.category = category;
         this.name = name;
         this.price = price;

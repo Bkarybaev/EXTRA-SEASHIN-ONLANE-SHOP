@@ -5,6 +5,7 @@ import models.Product;
 import java.util.Arrays;
 
 public class ProductDaoImpl implements ProductDao {
+
     @Override
     public void addProduct(Product product) {
         Product.generateId += 1;

@@ -11,6 +11,7 @@ import models.User;
 import service.impl.ProductServiceImpl;
 import service.impl.UserServiceImpl;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -315,12 +316,21 @@ public class Main {
                 }
 
             } while (isblok);
+            System.out.print("write size [ XXL, XS, XL, S, M, XXL, L ]: ");
+            String size = new Scanner(System.in).nextLine().toUpperCase();
+            String[] arraySize = size.trim().split(" ");
 
             switch (choice) {
                 case 1 -> {
                     for (Product product : productDao.getAllProduct()) {
                         if (product.getCategory().equals(Category.MAN)) {
-                            System.out.println(product);
+                            for (int i = 0; i < arraySize.length; i++) {
+                                for (int i1 = 0; i1 < product.getSizes().length; i1++) {
+                                    if (arraySize[i].contains(product.getSizes()[i1])) {
+                                        System.out.println(product);
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -371,7 +381,7 @@ public class Main {
                     int id = 0;
                     try {
                         id = new Scanner(System.in).nextInt();
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
                     boolean isblok = false;
@@ -389,8 +399,8 @@ public class Main {
                     System.out.print("delete by id product: ");
                     int id = 0;
                     try {
-                         id = new Scanner(System.in).nextInt();
-                    }catch (Exception e){
+                        id = new Scanner(System.in).nextInt();
+                    } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
                     boolean b1 = false;
