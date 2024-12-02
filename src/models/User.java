@@ -10,15 +10,15 @@ public class User {
     private String password;
     private String name;
     private Role user;
-    private Product[] basket;
+    private Product[] basket = new Product[0];
 
     //class
-    private long generateId = 1;
+    public static long generateId = 1;
 
     //constructor
 
     public User() {
-        this.id = generateId++;
+        this.id = generateId;
     }
 
     public User(String email, String password, String name, Role user) {

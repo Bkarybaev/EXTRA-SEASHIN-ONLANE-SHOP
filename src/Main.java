@@ -49,11 +49,11 @@ public class Main {
                     registration();
                 }
                 case 2 -> {
-                     loginData = login();
+                    loginData = login();
                     if (loginData.getEmail().equals(Admin.getEmail()) && loginData.getPassword().equals(Admin.getPassword())) {
                         aminMethod();
                     } else {
-
+                        clientMethod();
                     }
                 }
             }
@@ -148,6 +148,7 @@ public class Main {
         System.out.print("write choice:");
         String size = scanner.nextLine().toUpperCase();
         String[] s = size.trim().split(" ");
+        sizes = new Size[0];
         for (String string : s) {
             switch (string) {
                 case "XXS" -> product.setSizes(size(Size.XXS));
@@ -160,6 +161,8 @@ public class Main {
                 default -> System.out.println("error choice!");
             }
         }
+
+
         System.out.print("write color: ");
         product.setColor(scanner.nextLine());
 
@@ -281,7 +284,9 @@ public class Main {
             switch (choice) {
                 case 1 -> productService.getAllProduct();
                 case 2 -> category();
-                case 3 ->                       //todo favoriteProducts 3
+                case 3 -> favoriteProducts();
+                case 4 -> getAllProductClientBasket();
+                case 5 -> getProductByIdClientBasket();
                 case 0 -> {
                     return;
                 }
@@ -333,7 +338,7 @@ public class Main {
                         }
                     }
                 }
-                case 0->{
+                case 0 -> {
                     return;
                 }
                 default -> System.out.println("error choice!!");
@@ -341,23 +346,100 @@ public class Main {
         }
     }
 
-    public static void favoriteProducts(){
-        System.out.print("""
-                1. add product basket
-                2. delete id
-                """);
-
-        System.out.print("add basket by id: ");
-        int id = new Scanner(System.in).nextInt();
-        boolean isblok = false;
-        for (Product product : productDao.getAllProduct()) {
-            if (id == product.getId()){
-                isblok = true;
-                loginData.addBasket(product);
-                System.out.println("successful product [basket]");
-                System.out.println(loginData);
+    public static void favoriteProducts() {
+        while (true) {
+            System.out.print("""
+                    1. add product basket
+                    2. delete by id
+                    0. logout
+                    """);
+            System.out.print("choice: ");
+            int c = 0;
+            boolean b;
+            do {
+                try {
+                    c = new Scanner(System.in).nextInt();
+                    b = false;
+                } catch (InputMismatchException e) {
+                    b = true;
+                    System.out.print("try egan choice: ");
+                }
+            } while (b);
+            switch (c) {
+                case 1 -> {
+                    System.out.print("add basket by id: ");
+                    int id = 0;
+                    try {
+                        id = new Scanner(System.in).nextInt();
+                    }catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                    boolean isblok = false;
+                    for (Product product : productDao.getAllProduct()) {
+                        if (id == product.getId()) {
+                            isblok = true;
+                            loginData.addBasket(product);
+                            System.out.println("successful product [basket]");
+                            System.out.println(loginData);
+                        }
+                    }
+                    if (!isblok) System.out.println("not fount " + id + " id !!");
+                }
+                case 2 -> {
+                    System.out.print("delete by id product: ");
+                    int id = 0;
+                    try {
+                         id = new Scanner(System.in).nextInt();
+                    }catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                    boolean b1 = false;
+                    for (int i = 0; i < loginData.getBasket().length; i++) {
+                        if (loginData.getBasket()[i].getId() == id) {
+                            b1 = true;
+                            for (int i1 = i; i1 < loginData.getBasket().length - 1; i1++) {
+                                loginData.getBasket()[i1] = loginData.getBasket()[i1 + 1];
+                                System.out.println("successful deleted " + id + " id !");
+                            }
+                        }
+                    }
+                    if (b1) loginData.setBasket(Arrays.copyOf(loginData.getBasket(), loginData.getBasket().length - 1));
+                    if (!b1) System.out.println("not fount " + id + " product !!");
+                }
+                case 0 -> {
+                    return;
+                }
+                default -> System.out.println("error choice!");
             }
         }
-        if (!isblok) System.out.println("not fount " + id +" id !!");
+
+    }
+
+    public static void getAllProductClientBasket() {
+        System.out.println("-- Basket --");
+        System.out.println(Arrays.toString(loginData.getBasket()));
+    }
+
+    public static void getProductByIdClientBasket() {
+        System.out.print("write id: ");
+        int id = 0;
+        boolean b;
+        do {
+            try {
+                id = new Scanner(System.in).nextInt();
+                b = false;
+            } catch (InputMismatchException e) {
+                b = true;
+                System.out.print("error write id: ");
+            }
+        } while (b);
+        boolean isblock = false;
+        for (Product p : loginData.getBasket()) {
+            if (p.getId() == id) {
+                isblock = true;
+                System.out.println(p);
+            }
+        }
+        if (!isblock) System.out.println("not fount " + id + " product!!");
     }
 }

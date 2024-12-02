@@ -17,11 +17,11 @@ public class Product {
     private int quantity;
 
     //class
-    private long generateId = 1;
+    public static long generateId = 1;
 
     //constructor
     public Product() {
-        this.id = generateId++;
+        this.id = generateId;
     }
 
     public Product(Category category, String name, BigDecimal price, String color, String imageUrl, int quantity) {

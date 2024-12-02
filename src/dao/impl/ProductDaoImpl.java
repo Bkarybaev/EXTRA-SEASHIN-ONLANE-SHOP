@@ -1,17 +1,13 @@
 package dao.impl;
-
 import dao.ProductDao;
 import db.DataBase;
-import enums.Category;
-import enums.Size;
 import models.Product;
-
-import java.math.BigDecimal;
 import java.util.Arrays;
 
 public class ProductDaoImpl implements ProductDao {
     @Override
     public void addProduct(Product product) {
+        Product.generateId += 1;
         DataBase.products = Arrays.copyOf(DataBase.products, DataBase.products.length + 1);
         DataBase.products[DataBase.products.length - 1] = product;
         System.out.println(Arrays.toString(DataBase.products));
@@ -22,7 +18,8 @@ public class ProductDaoImpl implements ProductDao {
         boolean isblok = false;
         for (int i = 0; i < DataBase.products.length; i++) {
             if (id == DataBase.products[i].getId()) {
-                for (int i1 = i; i1 < DataBase.products.length - 1; i1++) {
+                isblok = true;
+                for (int i1 = i; i1 < DataBase.products.length-1; i1++) {
                     DataBase.products[i1] = DataBase.products[i1 + 1];
                     System.out.println("deleted" + id + " !!");
                 }
