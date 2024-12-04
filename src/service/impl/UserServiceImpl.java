@@ -2,12 +2,14 @@ package service.impl;
 
 import config.Validation;
 import dao.UserDao;
+import dao.impl.ProductDaoImpl;
 import exception.InvalidData;
 import models.Product;
 import models.User;
 import service.UserService;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
@@ -48,6 +50,21 @@ public class UserServiceImpl implements UserService {
         }
         if (!isblok) System.out.println("not fount !");
         return null;
+    }
+
+    @Override
+    public void deletedByIdProductClient(int id, ProductDaoImpl productDao, User loginData) {
+       if (id<1){
+           throw new RuntimeException("id lower zero!!");
+       }else {
+           for (Product product : productDao.getAllProduct()) {
+              if (product.getId() == id){
+                  userDao.deletedByIdProductClient(id,productDao,loginData);
+              }else {
+                  throw new RuntimeException("not fount " + id + " id !!");
+              }
+           }
+       }
     }
 
 

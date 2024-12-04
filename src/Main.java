@@ -10,8 +10,6 @@ import models.Product;
 import models.User;
 import service.impl.ProductServiceImpl;
 import service.impl.UserServiceImpl;
-
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -83,16 +81,36 @@ public class Main {
 
     public static User login() {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Write Email: ");
-        String email = scanner.nextLine();
-        if (!Validation.checkEmail(email)) {
-            throw new InvalidData("Invalid email");
-        }
+        String email = "";
+        boolean b;
+        do {
+            System.out.print("Write Email: ");
+            email = scanner.nextLine();
+            try {
+                if (!Validation.checkEmail(email)) {
+                    throw new InvalidData("Invalid email");
+                }
+                b = true;
+            } catch (InvalidData e) {
+                b = false;
+                System.out.println(e.getMessage() + " try again!");
+            }
+        } while (!b);
         System.out.print("Write Password: ");
         String password = scanner.nextLine();
-        if (!Validation.checkPassword(password)) {
-            throw new InvalidData("Invalid password");
-        }
+        boolean b1;
+        do {
+            try {
+                if (!Validation.checkPassword(password)) {
+                    throw new InvalidData("Invalid password");
+                }
+                b1 = true;
+            } catch (InvalidData e) {
+                b1 = false;
+                System.out.println(e.getMessage() + " try again!");
+            }
+        } while (!b1);
+
         if (email.equals(Admin.getEmail()) && password.equals(Admin.getPassword())) {
             return Admin;
         }
@@ -197,7 +215,6 @@ public class Main {
                 try {
                     c = new Scanner(System.in).nextInt();
                     isblok1 = false;
-
                 } catch (InputMismatchException e) {
                     isblok1 = true;
                     System.out.print("Invalid number try egan :");
@@ -240,9 +257,7 @@ public class Main {
                     System.out.print("Deleted by id write number: ");
                     productService.deleteProductById(new Scanner(System.in).nextLong());
                 }
-                case 2 -> {
-                    productService.deletedAllProduct();
-                }
+                case 2 -> productService.deletedAllProduct();
                 case 0 -> {
                     return;
                 }
@@ -357,72 +372,19 @@ public class Main {
     }
 
     public static void favoriteProducts() {
-        while (true) {
-            System.out.print("""
-                    1. add product basket
-                    2. delete by id
-                    0. logout
-                    """);
-            System.out.print("choice: ");
-            int c = 0;
-            boolean b;
-            do {
-                try {
-                    c = new Scanner(System.in).nextInt();
-                    b = false;
-                } catch (InputMismatchException e) {
-                    b = true;
-                    System.out.print("try egan choice: ");
-                }
-            } while (b);
-            switch (c) {
-                case 1 -> {
-                    System.out.print("add basket by id: ");
-                    int id = 0;
-                    try {
-                        id = new Scanner(System.in).nextInt();
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                    boolean isblok = false;
-                    for (Product product : productDao.getAllProduct()) {
-                        if (id == product.getId()) {
-                            isblok = true;
-                            loginData.addBasket(product);
-                            System.out.println("successful product [basket]");
-                            System.out.println(loginData);
-                        }
-                    }
-                    if (!isblok) System.out.println("not fount " + id + " id !!");
-                }
-                case 2 -> {
-                    System.out.print("delete by id product: ");
-                    int id = 0;
-                    try {
-                        id = new Scanner(System.in).nextInt();
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                    boolean b1 = false;
-                    for (int i = 0; i < loginData.getBasket().length; i++) {
-                        if (loginData.getBasket()[i].getId() == id) {
-                            b1 = true;
-                            for (int i1 = i; i1 < loginData.getBasket().length - 1; i1++) {
-                                loginData.getBasket()[i1] = loginData.getBasket()[i1 + 1];
-                                System.out.println("successful deleted " + id + " id !");
-                            }
-                        }
-                    }
-                    if (b1) loginData.setBasket(Arrays.copyOf(loginData.getBasket(), loginData.getBasket().length - 1));
-                    if (!b1) System.out.println("not fount " + id + " product !!");
-                }
-                case 0 -> {
-                    return;
-                }
-                default -> System.out.println("error choice!");
+        System.out.print("write by id: ");
+        int id = 0;
+        boolean b1;
+        do {
+            try {
+                id = new Scanner(System.in).nextInt();
+                b1 = false;
+            } catch (Exception e) {
+                b1 = true;
+                System.out.println("try again: ");
             }
-        }
-
+        } while (b1);
+        userService.deletedByIdProductClient(id, productDao, loginData);
     }
 
     public static void getAllProductClientBasket() {
