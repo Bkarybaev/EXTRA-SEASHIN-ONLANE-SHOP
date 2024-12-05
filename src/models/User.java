@@ -1,7 +1,5 @@
 package models;
-
 import enums.Role;
-
 import java.util.Arrays;
 
 public class User {

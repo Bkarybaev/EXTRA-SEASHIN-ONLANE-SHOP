@@ -1,10 +1,8 @@
 package service.impl;
-
 import dao.impl.ProductDaoImpl;
 import exception.InvalidData;
 import models.Product;
 import service.ProductService;
-
 import java.math.BigDecimal;
 import java.util.Arrays;
 

@@ -1,8 +1,6 @@
 package models;
-
 import enums.Category;
 import enums.Size;
-
 import java.math.BigDecimal;
 import java.util.Arrays;
 

@@ -1,7 +1,5 @@
 package service;
-
 import dao.impl.ProductDaoImpl;
-import models.Product;
 import models.User;
 
 public interface UserService {
@@ -10,4 +8,6 @@ public interface UserService {
     User login(String email,String password);
 
     void deletedByIdProductClient(int id , ProductDaoImpl productDao, User loginData);
+
+    void getProductByIdClient(int id, User loginData);
 }

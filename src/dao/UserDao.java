@@ -11,6 +11,7 @@ public interface UserDao {
 
     void deletedByIdProductClient(int id , ProductDaoImpl productDao, User loginData);
 
+    void getProductByIdClient(int productByIdClientBasket, User loginData);
 
 
 }

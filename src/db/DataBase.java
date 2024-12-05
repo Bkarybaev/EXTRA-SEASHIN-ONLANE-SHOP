@@ -1,5 +1,4 @@
 package db;
-
 import models.Product;
 import models.User;
 

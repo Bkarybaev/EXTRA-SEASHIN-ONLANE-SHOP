@@ -46,6 +46,16 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
+    @Override
+    public void getProductByIdClient(int id, User loginData) {
+        for (Product p : loginData.getBasket()) {
+            if (p.getId() == id) {
+                System.out.println(p);
+                System.out.println("asdgasdfgfgbh");
+            }
+        }
+    }
+
 
 
 

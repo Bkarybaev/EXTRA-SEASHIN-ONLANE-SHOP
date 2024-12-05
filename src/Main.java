@@ -81,7 +81,7 @@ public class Main {
 
     public static User login() {
         Scanner scanner = new Scanner(System.in);
-        String email = "";
+        String email;
         boolean b;
         do {
             System.out.print("Write Email: ");
@@ -302,7 +302,7 @@ public class Main {
                 case 2 -> category();
                 case 3 -> favoriteProducts();
                 case 4 -> getAllProductClientBasket();
-                case 5 -> getProductByIdClientBasket();
+                case 5 -> userService.getProductByIdClient(getProductByIdClientBasket(),loginData);
                 case 0 -> {
                     return;
                 }
@@ -392,7 +392,7 @@ public class Main {
         System.out.println(Arrays.toString(loginData.getBasket()));
     }
 
-    public static void getProductByIdClientBasket() {
+    public static int getProductByIdClientBasket() {
         System.out.print("write id: ");
         int id = 0;
         boolean b;
@@ -405,13 +405,6 @@ public class Main {
                 System.out.print("error write id: ");
             }
         } while (b);
-        boolean isblock = false;
-        for (Product p : loginData.getBasket()) {
-            if (p.getId() == id) {
-                isblock = true;
-                System.out.println(p);
-            }
-        }
-        if (!isblock) System.out.println("not fount " + id + " product!!");
+        return id;
     }
 }

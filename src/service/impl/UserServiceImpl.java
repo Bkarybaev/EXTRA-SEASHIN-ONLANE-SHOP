@@ -1,5 +1,4 @@
 package service.impl;
-
 import config.Validation;
 import dao.UserDao;
 import dao.impl.ProductDaoImpl;
@@ -7,9 +6,6 @@ import exception.InvalidData;
 import models.Product;
 import models.User;
 import service.UserService;
-
-import java.math.BigDecimal;
-import java.util.Arrays;
 
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
@@ -68,4 +64,14 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    public void getProductByIdClient(int id, User loginData) {
+        boolean isblock = false;
+        for (Product p : loginData.getBasket()) {
+            if (p.getId() == id) {
+                isblock = true;
+                userDao.getProductByIdClient(id,loginData);
+            }
+        }
+        if (!isblock) System.out.println("not fount " + id + " product!!");
+    }
 }

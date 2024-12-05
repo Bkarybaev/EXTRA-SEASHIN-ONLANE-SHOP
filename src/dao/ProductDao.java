@@ -1,5 +1,4 @@
 package dao;
-
 import models.Product;
 
 public interface ProductDao {
